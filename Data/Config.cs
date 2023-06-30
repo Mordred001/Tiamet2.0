@@ -8,8 +8,6 @@ namespace Tiamet2._0.Data
 {
     public class Config
     {
-        public string DiscordToken { get; set; }
-        public string OpenAIKey { get; set; }
         public ulong RolesMessageId { get; set; }
         public ulong BotChannelId { get; set; }
         public string Helltide { get; set; }

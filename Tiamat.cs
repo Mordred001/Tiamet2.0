@@ -4,6 +4,7 @@ using CiarDrekiOpenAILibrary.OpenAI;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using DotNetEnv;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,9 +30,10 @@ namespace Tiamet2._0
         private Timer legionstimer;
 
         private readonly Config configFile = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
-
+        
         public Tiamat() 
         {
+            Env.Load();
             socketClient = new DiscordSocketClient(new DiscordSocketConfig
             {
                 GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent | GatewayIntents.All
@@ -41,7 +43,7 @@ namespace Tiamet2._0
             Console.WriteLine("Please enter your OpenAI Key: ");
             var openAIkey = Console.ReadLine();
             if (string.IsNullOrEmpty(openAIkey))
-                openAIkey = configFile.OpenAIKey;
+                openAIkey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
             openAI = new OpenAI(openAIkey);
             tiamatChat = openAI.Chat.CreateConversation();
             tiamatChat.AppendSystemMessage("Your name is Tiamat, you are a PC Gamer, XBox Gamer, PlayStation Gamer, World famous D&D Dungeon Master, Movie and TV buff, and costumer. You CosPlay the 5 headed dragon Tiamat and can help anyone with any question related to the topics you know. You are pro LGBTQ+, love Bernie Sanders, and are pro-choice. You don't like the police and believe that the cops should be defunded and replaced with civil servants.");
@@ -54,7 +56,7 @@ namespace Tiamet2._0
             Console.WriteLine("Please enter your Discord Token: ");
             var dToken = Console.ReadLine();
             if (string.IsNullOrEmpty(dToken))
-                dToken = configFile.DiscordToken;
+                dToken = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
 
             await RegisterCommandsAsync();
 
